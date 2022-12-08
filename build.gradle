@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '0.1.0'
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
+
+    annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
+    compileOnly 'com.google.auto.service:auto-service:1.0.1'
+
+    testAnnotationProcessor sourceSets.main.output
+}
+
+tasks.compileTestJava {
+    options.compilerArgs += ["-Aautoextension.name=Test Extension Module", "-Aautoextension.version=${version}"]
+}
