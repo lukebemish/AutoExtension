@@ -17,6 +17,9 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+/**
+ * An annotation processor for the {@link AutoExtension} annotation.
+ */
 @SupportedAnnotationTypes("dev.lukebemish.autoextension.AutoExtension")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 @AutoService(Processor.class)
@@ -26,8 +29,8 @@ public class AutoExtensionAnnotationProcessor extends AbstractProcessor {
     private final Set<String> extensions = new HashSet<>();
     private final Set<String> staticExtensions = new HashSet<>();
 
-    public static final String INSTANCE_CLASSES_KEY = "extensionClasses";
-    public static final String STATIC_CLASSES_KEY = "staticExtensionClasses";
+    private static final String INSTANCE_CLASSES_KEY = "extensionClasses";
+    private static final String STATIC_CLASSES_KEY = "staticExtensionClasses";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

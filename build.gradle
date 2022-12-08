@@ -2,12 +2,16 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'signing'
+    id "org.ajoberstar.grgit" version "5.0.0"
 }
 
 group 'dev.lukebemish.autoextension'
 version '0.1.0'
+archivesBaseName = "autoextension"
 
-
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.withSourcesJar()
+java.withJavadocJar()
 
 repositories {
     mavenCentral()
@@ -20,6 +24,29 @@ dependencies {
     compileOnly 'com.google.auto.service:auto-service:1.0.1'
 
     testAnnotationProcessor sourceSets.main.output
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+javadoc {
+    title = "AutoExtension - v${version}"
+}
+
+jar {
+    doFirst {
+        manifest {
+            attributes(
+                    'Built-By': "Luke Bemish",
+                    'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                    'Build-Revision': grgit.head().id,
+                    'Created-By': "Gradle ${gradle.gradleVersion}",
+                    'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                    'Build-OS': "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+            )
+        }
+    }
 }
 
 tasks.compileTestJava {
