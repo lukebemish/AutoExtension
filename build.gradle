@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+    id 'signing'
 }
 
-group 'org.example'
+group 'dev.lukebemish.autoextension'
 version '0.1.0'
 
 
@@ -22,4 +24,59 @@ dependencies {
 
 tasks.compileTestJava {
     options.compilerArgs += ["-Aautoextension.name=Test Extension Module", "-Aautoextension.version=${version}"]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            pom {
+                name = "AutoExtension"
+                packaging = 'jar'
+                artifactId = 'autoextension'
+                description = 'A tool for automatically generating Groovy extension module meta files.'
+                url = 'https://github.com/lukebemish/AutoExtension'
+                inceptionYear = '2022'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'lukebemish'
+                        name = 'Luke Bemish'
+                        email = 'lukebemish@gmail.com'
+                        url = 'https://github.com/lukebemish/'
+                    }
+                }
+                scm {
+                    connection='scm:git:git://github.com/lukebemish/AutoExtension.git'
+                    developerConnection='scm:git:ssh://github.com/lukebemish/AutoExtension.git'
+                    url='https://github.com/lukebemish/AutoExtension'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.ossrhUsername
+                password = project.ossrhPassword
+            }
+        }
+    }
+}
+
+if(project.hasProperty("signing.gnupg.keyName")) {
+    signing {
+        useGpgCmd()
+        sign publishing.publications.maven
+    }
 }
