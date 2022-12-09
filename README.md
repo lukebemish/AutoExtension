@@ -30,3 +30,9 @@ tasks.compileJava {
     ]
 }
 ```
+To use this with groovy code, you must make sure to enable Java annotation processors in the groovy compile task:
+```gradle
+tasks.compileGroovy {
+    groovyOptions.javaAnnotationProcessing = true
+}
+```
