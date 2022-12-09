@@ -43,6 +43,10 @@ public class AutoExtensionAnnotationProcessor extends AbstractProcessor {
     }
 
     private void generateExtensionMetaFiles() {
+        if (extensions.isEmpty() && staticExtensions.isEmpty()) {
+            return;
+        }
+
         String name = processingEnv.getOptions().get("autoextension.name");
         String version = processingEnv.getOptions().get("autoextension.version");
 
@@ -69,12 +73,17 @@ public class AutoExtensionAnnotationProcessor extends AbstractProcessor {
         outNonStatic.removeIf(String::isBlank);
         outStatic.removeIf(String::isBlank);
 
-        properties.setProperty(INSTANCE_CLASSES_KEY, String.join(",", outNonStatic));
-        properties.setProperty(STATIC_CLASSES_KEY, String.join(",", outStatic));
+        var instanceOut = String.join(",", outNonStatic);
+        var staticOut = String.join(",", outStatic);
+
+        if (!instanceOut.isBlank())
+            properties.setProperty(INSTANCE_CLASSES_KEY, instanceOut);
+        if (!staticOut.isBlank())
+            properties.setProperty(STATIC_CLASSES_KEY, staticOut);
 
         if (name != null && !name.isBlank())
             properties.setProperty("moduleName", name);
-        if (version != null && !name.isBlank())
+        if (version != null && !version.isBlank())
             properties.setProperty("moduleVersion", version);
 
         try {
