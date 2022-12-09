@@ -24,6 +24,9 @@ extensions. You will also likely need to specify the extension module version an
 like:
 ```gradle
 tasks.compileJava {
-    options.compilerArgs += ['-Aautoextension.name=Extension Module Name', "-Aautoextension.version=${version}"]
+    options.compilerArgs += [
+        '-Aautoextension.name=Extension Module Name',
+        "-Aautoextension.version=${version}"
+    ]
 }
 ```
