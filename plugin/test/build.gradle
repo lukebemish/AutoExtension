@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'dev.lukebemish.autoextension' version '0.1.0'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+autoExtension {
+    libraryVersion = '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}

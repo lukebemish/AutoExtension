@@ -1,0 +1,24 @@
+plugins {
+    id 'groovy-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.18.0'
+}
+
+group 'dev.lukebemish.autoextension'
+version '0.1.0'
+
+gradlePlugin {
+    plugins {
+        autoExtensionPlugin {
+            id = 'dev.lukebemish.autoextension'
+            implementationClass = 'dev.lukebemish.autoextension.plugin.AutoExtensionPlugin'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
